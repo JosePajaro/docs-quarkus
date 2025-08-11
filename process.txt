@@ -1,0 +1,32 @@
+pp7Sm4oZ$7B5aAC^
+
+	quarkus create app org.acme:security-keycloak-authorization-quickstart 
+	
+	./mvnw quarkus:add-extension -Dextensions='oidc,keycloak-authorization'
+	
+	docker run --name keycloak `
+  -e KC_BOOTSTRAP_ADMIN_USERNAME=admin `
+  -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin `
+  -p 8543:8443 `
+  -v "C:\Users\josep\nauth\security-keycloak-authorization-quickstart\src\main\resources\pwd\config\keycloak-keystore.jks:/etc/keycloak-keystore.jks" `
+  quay.io/keycloak/keycloak:26.3.0 `
+  start --hostname-strict=false `
+        --https-key-store-file=/etc/keycloak-keystore.jks
+		
+		Para el archivo de properties
+	# OIDC Configuration
+%prod.quarkus.oidc.auth-server-url=https://localhost:8543/realms/quarkus 
+quarkus.oidc.client-id=backend-service 
+quarkus.oidc.credentials.secret=secret 
+quarkus.oidc.tls.verification=none 
+
+# Enable Policy Enforcement
+quarkus.keycloak.policy-enforcer.enable=true 
+
+# Import the realm file with Dev Services for Keycloak
+# Note: This property is effective only in dev mode, not in JVM or native modes
+quarkus.keycloak.devservices.realm-path=./pwd/config/quarkus-realm.json
+
+
+
+git remote add origin https://github.com/JosePajaro/docs-quarkus.git
