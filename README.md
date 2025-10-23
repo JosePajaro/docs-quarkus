@@ -60,3 +60,24 @@ If you want to learn more about building native executables, please consult <htt
 Easily start your REST Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+
+## Generate Access_Token in linux terminal 
+Continuando con las pruebas, luego de compilar la aplicacion en con la jvm o el ejecutable nativo asegurate de ejecutarla y abre una terminal de linux bash y ejecuta el siguiente comando.
+
+```shell script
+export access_token=$(curl --insecure -X POST https://localhost:8543/realms/quarkus/protocol/openid-connect/token --user backend-service:secret -H "content-type: application/x-www-form-urlencoded" -d "username=alice&password=alice&grant_type=password" | jq --raw-output ".access_token")
+```
+Luego
+```shell script
+echo $access_token
+```
+para confirmar que se haya creado la variable de entorno $access_token.
+
+Si se creó exitosamente ejecuta el siguiente comando para acceder a la informacion.
+
+```shell script
+curl -v -X GET \
+http://localhost:8080/api/users/me \
+-H "Authorization: Bearer "$access_token
+```
