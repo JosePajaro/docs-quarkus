@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "quarkus-crud-backend-service-dev",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
