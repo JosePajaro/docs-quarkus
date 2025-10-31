@@ -1,4 +1,4 @@
-package org.acme;
+package org.acme.security.keycloak.authorization.resources;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
