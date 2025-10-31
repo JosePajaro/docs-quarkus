@@ -1,6 +1,7 @@
-package org.acme.security.keycloak.authorization;
+package org.acme.security.keycloak.authorization.resources;
 
 import io.quarkus.security.identity.SecurityIdentity;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -15,6 +16,7 @@ public class UserResource {
     @GET
     @Path("me")
     @NoCache
+    @RolesAllowed({"admin","user"})
     public User me() {
         return new User(identity);
     }
