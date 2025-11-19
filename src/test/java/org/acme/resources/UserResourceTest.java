@@ -23,4 +23,29 @@ public class UserResourceTest {
                 .body("size()", greaterThan(0))
                 .body("userName", is("jose.pajaro"));
     }
+
+    @Test
+    void Admin200() {
+        String token = TokenGenerator.getUserToken("jose.pajaro", "password");
+
+        given()
+                .header("Authorization", "Bearer " + token)
+                .when()
+                .get("/api/admin")
+                .then()
+                .statusCode(200)
+                .body(is("granted"));
+    }
+
+    @Test
+    void Admin403() {
+        String token = TokenGenerator.getUserToken("margarita.ortega", "password");
+
+        given()
+                .header("Authorization", "Bearer " + token)
+                .when()
+                .get("/api/admin")
+                .then()
+                .statusCode(403);
+    }
 }
