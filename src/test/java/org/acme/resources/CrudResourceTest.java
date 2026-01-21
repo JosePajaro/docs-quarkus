@@ -1,8 +1,11 @@
 package org.acme.resources;
 
 import io.quarkus.test.junit.QuarkusTest;
+import org.acme.security.keycloak.authorization.controller.dto.UserDTO;
 import org.acme.security.keycloak.authorization.utils.TokenGenerator;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.greaterThan;
@@ -27,6 +30,21 @@ public class CrudResourceTest {
                 .header("Authorization", "Bearer " + token)
                 .when()
                 .get("/keycloak/user/search")
+                .then()
+                .statusCode(200)
+                .body("size()", greaterThan(0));
+    }
+
+    @Test
+    void createUsersAdmin(){
+        String token = TokenGenerator.getUserToken("jose.pajaro", "password");
+        UserDTO user = new UserDTO("user.test", "newUser", "Test", "user@test.com", "1234",  new HashSet<>() );
+        given()
+                .header("Authorization", "Bearer " + token)
+                .contentType("application/json")
+                .body(user)
+                .when()
+                .post("/keycloak/user/create")
                 .then()
                 .statusCode(200)
                 .body("size()", greaterThan(0));
